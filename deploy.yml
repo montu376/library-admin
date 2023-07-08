@@ -1,0 +1,23 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: test-library-admin
+  labels: 
+    env: test
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      env: test  
+  template:
+    metadata:
+      labels: 
+        env: test
+    spec:
+      containers:
+        - name:  test-library-admin
+          image: montud/library-admin:latest
+          ports:
+            - containerPort: 8080
+            
+
