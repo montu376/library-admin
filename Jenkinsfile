@@ -7,16 +7,9 @@ pipeline{
                 label 'montuUbuntu'
             }
             steps {
-                sh 'mvn package'
-                stash includes: 'target/*.jar', name: 'jarartifact' 
+                sh 'mvn package -DskipTests'
             }
 
-            post{
-                success{
-                    archiveArtifacts artifacts: 'target/*.jar'
-                    
-                }        
-            }
         } 
 
         stage('docker push'){
@@ -24,7 +17,6 @@ pipeline{
                 label 'montuUbuntu'
             }
             steps {
-                unstash 'jarartifact'
                 sh 'docker build -t montud/library-admin:latest .'
                 sh 'docker push montud/library-admin:latest'
             }
@@ -32,8 +24,14 @@ pipeline{
 
 
         stage('Kubernates deploy'){
+            
+            agent{
+                label 'microkube'
+            }
+
+          
             steps {
-                bat 'C:\\Users\\coolm\\kubectl.exe apply -f deploy.ydml'
+                sh 'microk8s kubectl apply -f deploy.yml'
             }
         }
     }

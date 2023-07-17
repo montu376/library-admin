@@ -3,21 +3,59 @@ kind: Deployment
 metadata:
   name: test-library-admin
   labels: 
-    env: test
+    env: library-admin-prod
 spec:
   replicas: 2
   selector:
     matchLabels:
-      env: test  
+      env: library-admin-prod  
   template:
     metadata:
       labels: 
-        env: test
+        env: library-admin-prod
     spec:
+      volumes:  
+        - name: library-admin-configmap-volume
+          configMap:
+            name:  library-admin-configmap
       containers:
         - name:  test-library-admin
           image: montud/library-admin:latest
-          ports:
-            - containerPort: 8080
-            
+          volumeMounts:
+           - name: library-admin-configmap-volume
+             mountPaths: "/config"
+             readonly: "true"
+          env:
+            - name: server.port
+              configMapKeyRef:
+                key: server.port
+                name: library-admin-configmap
+            - name: spring.application.name
+              configMapKeyRef:
+                key: spring.application.name
+                name: library-admin-configmap
+            - name: management.endpoints.web.exposure.include
+              configMapKeyRef:
+                key: management.endpoints.web.exposure.include
+                name: library-admin-configmap
+            - name: eureka.client.register-with-eureka
+              configMapKeyRef:
+                key: eureka.client.register-with-eureka
+                name: library-admin-configmap
+            - name: eureka.client.serviceUrl.defaultZone
+              configMapKeyRef:
+                key: eureka.client.serviceUrl.defaultZone
+                name: library-admin-configmap
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name:  library-admin-configmap
+data:
+  server.port: "8086"
+  spring.application.name: "libraryadmin"
+  management.endpoints.web.exposure.include: "*"
+  eureka.client.fetch-registry: "true"
+  eureka.client.register-with-eureka: "true"
+  eureka.client.serviceUrl.defaultZone: "${EUREKA_URI:http://microservice-discovery.default.svc.cluster.local:8761/eureka}"
 
