@@ -23,7 +23,7 @@ spec:
           image: 192.168.0.121:5000/montud/library-admin:latest
           volumeMounts:
            - name: library-admin-configmap-volume
-             mountPaths: "/config"
+             mountPath: "/config"
           env:
             - name: server.port
               valueFrom:
