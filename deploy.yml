@@ -24,7 +24,6 @@ spec:
           volumeMounts:
            - name: library-admin-configmap-volume
              mountPaths: "/config"
-             readonly: "true"
           env:
             - name: server.port
               valueFrom:
