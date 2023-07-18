@@ -20,32 +20,38 @@ spec:
             name:  library-admin-configmap
       containers:
         - name:  test-library-admin
-          image: montud/library-admin:latest
+          image: 192.168.0.121:5000/montud/library-admin:latest
           volumeMounts:
            - name: library-admin-configmap-volume
              mountPaths: "/config"
              readonly: "true"
           env:
             - name: server.port
-              configMapKeyRef:
-                key: server.port
-                name: library-admin-configmap
+              valueFrom:
+                configMapKeyRef:
+                  key: server.port
+                  name: library-admin-configmap
             - name: spring.application.name
-              configMapKeyRef:
-                key: spring.application.name
-                name: library-admin-configmap
+              valueFrom:
+                configMapKeyRef:
+                  key: spring.application.name
+                  name: library-admin-configmap
+
             - name: management.endpoints.web.exposure.include
-              configMapKeyRef:
-                key: management.endpoints.web.exposure.include
-                name: library-admin-configmap
+              valueFrom:
+                configMapKeyRef:
+                  key: management.endpoints.web.exposure.include
+                  name: library-admin-configmap
             - name: eureka.client.register-with-eureka
-              configMapKeyRef:
-                key: eureka.client.register-with-eureka
-                name: library-admin-configmap
+              valueFrom:
+                configMapKeyRef:
+                  key: eureka.client.register-with-eureka
+                  name: library-admin-configmap
             - name: eureka.client.serviceUrl.defaultZone
-              configMapKeyRef:
-                key: eureka.client.serviceUrl.defaultZone
-                name: library-admin-configmap
+              valueFrom:
+                configMapKeyRef:
+                  key: eureka.client.serviceUrl.defaultZone
+                  name: library-admin-configmap
 ---
 apiVersion: v1
 kind: ConfigMap

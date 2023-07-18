@@ -17,8 +17,8 @@ pipeline{
                 label 'montuUbuntu'
             }
             steps {
-                sh 'docker build -t montud/library-admin:latest .'
-                sh 'docker push montud/library-admin:latest'
+                sh 'docker build -t 192.168.0.121:5000/montud/library-admin:latest .'
+                sh 'docker push 192.168.0.121:5000/montud/library-admin:latest'
             }
         }
 
@@ -28,8 +28,7 @@ pipeline{
             agent{
                 label 'microkube'
             }
-
-          
+            
             steps {
                 sh 'microk8s kubectl apply -f deploy.yml'
             }
