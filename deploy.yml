@@ -3,23 +3,20 @@ kind: Deployment
 metadata:
   name: test-library-admin
   labels: 
-    env: library-admin-prod
+    env: test
 spec:
   replicas: 2
   selector:
     matchLabels:
-      env: library-admin-prod  
+      env: test  
   template:
     metadata:
       labels: 
-        env: library-admin-prod
+        env: test
     spec:
-      volumes:  
-        - name: library-admin-configmap-volume
-          configMap:
-            name:  library-admin-configmap
       containers:
         - name:  test-library-admin
+<<<<<<< HEAD
           image: 192.168.0.121:5000/montud/library-admin:latest
           volumeMounts:
            - name: library-admin-configmap-volume
@@ -63,4 +60,10 @@ data:
   eureka.client.fetch-registry: "true"
   eureka.client.register-with-eureka: "true"
   eureka.client.serviceUrl.defaultZone: "${EUREKA_URI:http://microservice-discovery.default.svc.cluster.local:8761/eureka}"
+=======
+          image: montud/library-admin:latest
+          ports:
+            - containerPort: 8080
+            
+>>>>>>> parent of 696e82c (updated condfig dockerfile and added env)
 
