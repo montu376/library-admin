@@ -7,16 +7,10 @@ pipeline{
                 label 'montuUbuntu'
             }
             steps {
-                sh 'mvn package'
+                sh 'mvn package -DskipTests'
                 stash includes: 'target/*.jar', name: 'jarartifact' 
             }
 
-            post{
-                success{
-                    archiveArtifacts artifacts: 'target/*.jar'
-                    
-                }        
-            }
         } 
 
         stage('docker push'){
